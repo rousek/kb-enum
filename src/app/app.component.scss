@@ -1,0 +1,17 @@
+mat-toolbar {
+  padding: 8px 16px;
+  height: 64px;
+}
+
+.end-buttons {
+  margin-left: auto;
+}
+
+.logo-kb {
+  height: 100%;
+}
+
+.app-content {
+  height: calc(100% - 64px);
+  display: flex;
+}

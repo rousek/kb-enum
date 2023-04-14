@@ -1,0 +1,45 @@
+<div class="fixed-container">
+  <h1>{{ enumName }}</h1>
+
+  <div class="controls-container">
+    <mat-select class="order-by-select" [(ngModel)]="reqParams.orderBy" (ngModelChange)="reload()">
+      <mat-option *ngFor="let order of orderBys" [value]="order.value">
+        {{ order.label | translate }}
+      </mat-option>
+    </mat-select>
+    <mat-select class="order-select" [(ngModel)]="reqParams.order" (ngModelChange)="reload()">
+      <mat-option *ngFor="let order of orders" [value]="order.value">
+        {{ order.label | translate }}
+      </mat-option>
+    </mat-select>
+    <mat-checkbox class="additional-checkbox" [(ngModel)]="reqParams.additionalInfo" labelPosition="before" (ngModelChange)="reload()">{{ 'ADDITIONAL_INFO' | translate }}</mat-checkbox>
+  </div>
+</div>
+
+<div *ngIf="(enum | async) as e" class="enum-content">
+  <mat-card *ngFor="let item of e.enumerationItemDtos">
+    <mat-card-header *ngIf="item.description">
+      <mat-card-title>{{ item.description }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p><span>{{ 'CODE' | translate }}:</span> {{ item.code }}</p>
+      <p *ngIf="item.name"><span>{{ 'NAME' | translate }}:</span> {{ item.name }}</p>
+      <p *ngIf="item.validFrom"><span>{{ 'VALID_FROM' | translate }}:</span> {{ parseDate(item.validFrom) | localizedDate }}</p>
+      <p *ngIf="item.validTo"><span>{{ 'VALID_TO' | translate }}:</span> {{ parseDate(item.validTo) | localizedDate }}</p>
+      <div *ngIf="item.additionalInfo">
+        <table class="additional-info-table">
+          <th>{{ 'ADDITIONAL_INFO' | translate }}:</th>
+          <tr *ngFor="let parsed of parseObj(item.additionalInfo)">
+            <td>{{ parsed.key }}</td>
+            <td>{{ parsed.value }}</td>
+          </tr>
+        </table>
+      </div>
+    </mat-card-content>
+
+  </mat-card>
+</div>
+
+<div *ngIf="loading | async" class="loading">
+  <mat-spinner></mat-spinner>
+</div>
